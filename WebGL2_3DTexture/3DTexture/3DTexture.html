@@ -52,6 +52,7 @@ void main()
 
     vTexCoord = aTexCoord;
 }
+
 </script>
 
 <script id="fragment-shader" type="x-shader/x-fragment">
@@ -69,6 +70,7 @@ void main()
 {
     fColor = vColor * (texture(uTexture, vTexCoord));
 }
+
 </script>
 
 <script type="text/javascript" src="../Common/initShaders.js"></script>
@@ -77,9 +79,28 @@ void main()
 
 
 <body>
-<canvas id="gl-canvas" width="512" height="512">
-    Oops ... your browser doesn't support the HTML5 canvas element
-</canvas>
-<img id="imageTexture" src="TexturesCom_TilesAzulejoBlue0069_1_seamless_S.png"></img>
+    <table>
+        <tr>
+            <td>
+                <canvas id="gl-canvas" width="512" height="512">
+                    Oops ... your browser doesn't support the HTML5 canvas element.
+                </canvas>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <p>Please use arrow keys to rotate shape.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img id="imageTexture" src="TexturesCom_TilesAzulejoBlue0069_1_seamless_S.png"></img>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
