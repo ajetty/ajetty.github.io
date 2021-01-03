@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Connect Four Javascript Version</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.sound.min.js"></script>
+    <script src="BigInteger.min.js"></script>
+    <link rel="stylesheet" href="connectFour.css">
+
+
+
+</head>
+<body>
+<script src="GameController.js"></script>
+<script src="GUI.js"></script>
+<script src="PlayerOne.js"></script>
+<script src="PlayerTwo.js"></script>
+<script src="BitBoard.js"></script>
+
+<script>
+    function animations(elementClass, classId) {
+        var elem = document.getElementById(classId);
+
+        elem.classList.add(elementClass);
+    }
+</script>
+
+<div class="explosion">
+    <p id="playerTurnStatus">TEST</p><img class="imagePlayer" id="playerImage" src="images/daisy.png"/>
+    <div id="firework"></div>
+</div>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+body {
+
+
+    background-image: linear-gradient(to right top, #ecd7d7 0%, #cf9a9a 25%, #af2b37 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+#canvas {
+    z-index: -100;
+}
+
+
+@font-face {
+    font-family: Delius;
+    src: url('fonts/DeliusSwashCaps-Regular.ttf');
+}
+
+p {
+    font-family: Delius;
+    font-size: 40px;
+    font-weight: bold;
+    background-image: linear-gradient(to right, #732226, #3a243b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+button {
+    font-family: Delius;
+    font-size: 15px;
+    font-weight: bold;
+    color: #3a243b;
+    width: 125px;
+    height: 65px;
+    border: double 4px transparent;
+    border-radius: 30px;
+    background-image: linear-gradient(#cf9a9a 0%, #ecd7d7 50%, #cf9a9a 100%), linear-gradient(to right, #3a243b, #732226, #3a243b);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    outline: none;
+}
+
+button:active {
+    font-weight: bolder;
+    color: blue;
+    outline: none;
+    background-image: linear-gradient(#ecd7d7 0%, #cf9a9a 50%, #ecd7d7 100%), linear-gradient(to right, #af2b37, #cf755b, #af2b37);
+}
+
+#playerImage {
+    width: 58px;
+}
+
+
+/* rotation and scale of player image on top of canvas */
+
+.rotate {
+    opacity: initial;
+    width: 58px;
+    animation: rotation 2s infinite linear;
+}
+
+.scale {
+    animation: scale 3s 1 forwards;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes scale {
+    from {
+        transform: scale(1.0) rotate(0deg);
+    }
+    to {
+        transform: scale(0.0) rotate(359deg);
+    }
+}
+
+/* firework explosion */
+
+.after {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    box-shadow: 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff;
+    animation: 1s bang ease-out 1 backwards, 1s gravity ease-in 1 backwards;
+}
+
+@keyframes bang {
+    to {
+        box-shadow: 9px 30.3333333333px #2600ff, -233px -308.6666666667px #0900ff, -125px 82.3333333333px #ff00e1, -108px -107.6666666667px #008cff, -133px 37.3333333333px #ffcc00, 144px 38.3333333333px magenta, -4px -106.6666666667px #00eaff, -192px 0.3333333333px #ff0400, -179px -299.6666666667px #e600ff, 108px -179.6666666667px #00ff66, 145px -231.6666666667px #ff3300, 212px -3.6666666667px #006fff, -160px -121.6666666667px #ff0088, 8px -354.6666666667px #ff0055, -83px -12.6666666667px #00ff77, -146px -31.6666666667px #00ffb3, -90px -277.6666666667px #9dff00, -49px 42.3333333333px #4dff00, 139px -409.6666666667px #bfff00, 57px -44.6666666667px #a6ff00, 178px -393.6666666667px #ff0009, -145px -148.6666666667px #9dff00, -146px -13.6666666667px #00eaff, -243px -138.6666666667px #aeff00, 235px -245.6666666667px #ff006f, 37px -197.6666666667px #aa00ff, -35px -255.6666666667px #00aaff, -77px -63.6666666667px #004dff, 179px -81.6666666667px #ff006a, 98px -128.6666666667px magenta, 207px -293.6666666667px #00ffa6, 130px -341.6666666667px #008cff, -105px -224.6666666667px #5eff00, 216px -414.6666666667px #e1ff00, 184px 34.3333333333px #fffb00, 244px -46.6666666667px #00ccff, 156px -31.6666666667px #00ff0d, 45px -206.6666666667px #00ffcc, 99px -110.6666666667px #00ffc4, -2px -392.6666666667px #73ff00, -146px -118.6666666667px #ff2600, 83px -372.6666666667px #00ddff, -204px -155.6666666667px #2b00ff, 3px -348.6666666667px #00ff59, -38px 56.3333333333px deepskyblue, 108px -333.6666666667px #00aeff, -57px -95.6666666667px #ea00ff, 138px -85.6666666667px #00b7ff, -135px -24.6666666667px #ffd900, 226px 41.3333333333px red, 129px -17.6666666667px #00ff2f;
+    }
+}
+
+@keyframes gravity {
+    to {
+        transform: translateY(200px);
+        opacity: 0;
+    }
+}
+
+@keyframes position {
+    0%, 19.9% {
+        margin-top: 10%;
+        margin-left: 40%;
+    }
+    20%, 39.9% {
+        margin-top: 10%;
+        margin-left: 30%;
+    }
+    40%, 59.9% {
+        margin-top: 20%;
+        margin-left: 70%;
+    }
+    60%, 79.9% {
+        margin-top: 30%;
+        margin-left: 20%;
+    }
+    80%, 99.9% {
+        margin-top: 30%;
+        margin-left: 80%;
+    }
+}
+
+
+
+
+
