@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Elon's Martian Musketeers</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="Build/UnityLoader.js"></script>
+    <script>
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/EMM_WebGL_Build.json", {onProgress: UnityProgress});
+    </script>
+  </head>
+  <body>
+    <div class="webgl-content">
+	
+		<h4>Controls</h4>
+		<ul style="margin-left:20px;">
+			<li>WASD to pan camera</li>
+			<li>Q to rotate camera to the left</li>
+			<li>E to rotate camera to the right</li>
+			<li>R to have camera zoom in</li>
+			<li>F to have camera zoom out</li>
+			<li>Please use mouse to select a purple astronaut
+				<ul style="margin-left:20px;">
+					<li>when pressing its move button you will see yellow selection squares - that is the character's movement range</li>
+					<li>when close to a lizard (a Martian/Enemy) press the attack button - if its on a yellow square then its within range of attack</li>
+				</ul>
+			</li>
+		</ul><br>
+		<p>The first team whose character's Health reaches zero loses.<br>The game is played in rounds with the purple astronauts, Elon's Musketeers, going first.<br>With each turn a musketeer has, their turn diamond will go from green to red to show who has had their turn.<br>Once everyone has had their turn then the Martians will take theirs and then starts another round.</p><br><br>
+      <div id="unityContainer" style="width: 960px; height: 600px"></div>
+      <div class="footer">
+        <div class="webgl-logo"></div>
+        <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+        <div class="title">Elon's Martian Musketeers</div>
+      </div>
+    </div>
+  </body>
+</html>
