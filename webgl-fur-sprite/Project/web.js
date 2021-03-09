@@ -4,7 +4,7 @@
 //fix lighting
 
 let timesToSubdivide = 5;
-let layers = 15;
+let layers = 50;
 let gl;
 
 let renderWindow = function () {
