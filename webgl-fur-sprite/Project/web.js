@@ -4,7 +4,11 @@
 //fix lighting
 
 let timesToSubdivide = 5;
-let layers = 50;
+let layers = 110;
+let fovy = 26.0;   //field-of-view in Y direction angle (in degrees)
+let hairLength = 0.4;
+let hairDroop = 3.0;
+let rotateFlag = false;
 let gl;
 
 let renderWindow = function () {
@@ -25,8 +29,7 @@ let renderWindow = function () {
     let theta = 0.0;
     let phi = 0.0;
 
-    let  fovy = 50.0;       //field-of-view in Y direction angle (in degrees)
-    let  aspect = 1.0;      //viewport aspect ratio
+    let aspect = 1.0;      //viewport aspect ratio
 
     let left = -2.0;
     let right = 2.0;
@@ -35,7 +38,10 @@ let renderWindow = function () {
 
     let modelViewMatrix, projectionMatrix, normalSphereMatrix, eye,
         modelViewMatrixLocation, projectionMatrixLocation, normalMatrixLocation,
-        currentLayerLocation;
+        currentLayerLocation, hairLengthLocation, hairDroopLocation, timeLocation;
+
+    let time;
+    let firstInit = true;
 
     let cameraMatrix = mat4();
     let cameraAngleRotation = 0.0;
@@ -44,7 +50,7 @@ let renderWindow = function () {
     let up = vec3(0.0, 1.0, 0.0);
 
     let lightPosition = vec4(0.1, 2.7, 2.9, 0.0);
-    let lightAmbient = vec4(0.0, 0.0, 0.0, 1.0);
+    let lightAmbient = vec4(0.4, 0.4, 0.55, 1.0);
     let lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
     let lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -61,8 +67,7 @@ let renderWindow = function () {
 
         gl.viewport(0, 0, canvas.width, canvas.height);
         gl.clearColor(0.33, 0.33, 0.5, 1.0);
-        //gl.clearColor(0, 0, 0, 0.5);
-
+        //gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
         aspect =  canvas.width/canvas.height;
 
@@ -80,12 +85,7 @@ let renderWindow = function () {
 
         //load shaders and initialize attribute buffers, create shader program
         program = initShaders(gl, "vertexShader.glsl", "fragmentShader.glsl");
-        //gl.useProgram(program);
-
-        program2 = initShaders(gl, "vertexShader2.glsl", "fragmentShader2.glsl");
-        //gl.useProgram(program2);
-
-
+        gl.useProgram(program);
 
         //load vertex buffer data into gpu
         const vBuffer = gl.createBuffer();
@@ -97,10 +97,6 @@ let renderWindow = function () {
         gl.vertexAttribPointer(aPosition, 4, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(aPosition);
 
-        const aPosition2 = gl.getAttribLocation(program2, "aPosition");
-        gl.vertexAttribPointer(aPosition2, 4, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(aPosition2);
-
         //load normal buffer data into gpu,
         const nBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
@@ -109,10 +105,6 @@ let renderWindow = function () {
         const aNormal = gl.getAttribLocation(program, "aNormal");
         gl.vertexAttribPointer(aNormal, 4, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(aNormal);
-
-        const aNormal2 = gl.getAttribLocation(program2, "aNormal");
-        gl.vertexAttribPointer(aNormal2, 4, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(aNormal2);
 
         //load texture buffer data into gpu,
         let tBuffer = gl.createBuffer();
@@ -123,38 +115,10 @@ let renderWindow = function () {
         gl.vertexAttribPointer(aTexCoord, 2, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(aTexCoord);
 
-        //load alpha buffer data into gpu
-        // let aBuffer = gl.createBuffer();
-        // gl.bindBuffer(gl.ARRAY_BUFFER, aBuffer);
-        // gl.bufferData(gl.ARRAY_BUFFER, flatten(furTexture.alpha), gl.STATIC_DRAW);
-        //
-        // let aAlpha = gl.getAttribLocation(program, "aAlpha");
-        // gl.vertexAttribPointer(aAlpha, 1, gl.FLOAT, false, 0, 0);
-        // gl.enableVertexAttribArray(aAlpha);
-
         //light matrices
         let ambientProduct = mult(lightAmbient, materialAmbient);
         let diffuseProduct = mult(lightDiffuse, materialDiffuse);
         let specularProduct = mult(lightSpecular, materialSpecular);
-
-        //use second program now
-        //gl.useProgram(program2);
-
-        //get uniform variable memory location from program
-        // modelViewMatrixLocation = gl.getUniformLocation(program2, "uModelViewMatrix");
-        // projectionMatrixLocation = gl.getUniformLocation(program2, "uProjectionMatrix");
-        // normalMatrixLocation = gl.getUniformLocation(program2, "uNormalMatrix");
-        //
-        // //light uniforms sent to fragment shader
-        // gl.uniform4fv(gl.getUniformLocation(program2, "uAmbientProduct"), flatten(ambientProduct));
-        // gl.uniform4fv(gl.getUniformLocation(program2, "uDiffuseProduct"), flatten(diffuseProduct));
-        // gl.uniform4fv(gl.getUniformLocation(program2, "uSpecularProduct"), flatten(specularProduct));
-        // gl.uniform4fv(gl.getUniformLocation(program2, "uLightPosition"), flatten(lightPosition));
-        //
-        // gl.uniform1f(gl.getUniformLocation(program2, "uShininess"), materialShininess);
-
-        //use first program first
-        gl.useProgram(program);
 
         //base texture
         gl.activeTexture(gl.TEXTURE0);
@@ -182,17 +146,31 @@ let renderWindow = function () {
         //get uniform layer variable memory location from program
         currentLayerLocation = gl.getUniformLocation(program, "uCurrentLayer");
 
-        //current layer uniform sent to fragment shader
-        gl.uniform1f(gl.getUniformLocation(program, "uCurrentLayer"), currentLayer);
+        //get uniform hair length variable memory location from program
+        hairLengthLocation = gl.getUniformLocation(program, "uHairLength");
+
+        //get uniform hair length variable memory location from program
+        hairDroopLocation = gl.getUniformLocation(program, "uHairDroop");
+
+        //get uniform hair length variable memory location from program
+        timeLocation = gl.getUniformLocation(program, "uTime");
+
+        //current layer uniform sent to vertex shader
+        gl.uniform1f(currentLayerLocation, currentLayer);
+
+        //current hair length uniform sent to vertex shader
+        gl.uniform1f(hairLengthLocation, hairLength);
+
+        //current hair droop uniform sent to vertex shader
+        gl.uniform1f(hairDroopLocation, hairDroop);
+
+        //current hair droop uniform sent to vertex shader
+        gl.uniform1f(timeLocation, time/1000.0);
 
 
         document.getElementById("fovSlider").onchange = function(event) {
             fovy = event.target.value;
         };
-
-        document.getElementById("rotateXZSlider").onchange = function(event) {
-            theta = event.target.value * (Math.PI/180);
-        }
 
         document.getElementById("divideSlider").onchange = function(event) {
             timesToSubdivide = event.target.value;
@@ -204,12 +182,27 @@ let renderWindow = function () {
             init();
         }
 
-        render();
+        document.getElementById("hairLengthSlider").onchange = function(event) {
+            hairLength = event.target.value / 10; //range of 0 to 1.0
+            gl.uniform1f(hairLengthLocation, hairLength);
+        }
+
+        document.getElementById("hairDroopSlider").onchange = function(event) {
+            hairDroop = event.target.value;
+            gl.uniform1f(hairDroopLocation, hairDroop);
+        }
+
+        if(firstInit) {
+            render(time);
+            firstInit = false;
+        }
     }
 
 
-    function render() {
+    function render(time) {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        if(rotateFlag) { theta += 0.5 * (Math.PI/180); }
 
         eye = vec3(radius * Math.sin(theta) * Math.cos(phi), radius * Math.sin(theta) * Math.sin(phi), radius * Math.cos(theta));
 
@@ -222,17 +215,17 @@ let renderWindow = function () {
         gl.uniformMatrix4fv(projectionMatrixLocation, false, flatten(projectionMatrix));
         gl.uniformMatrix3fv(normalMatrixLocation, false, flatten(normalSphereMatrix))
 
+        //set time uniform
+        gl.uniform1f(timeLocation, time/1000.0);
+
         //for wire mesh
         //for (let i = 0; i < furSphere.vertices.length; i += 3) {
         //    gl.drawArrays(gl.LINE_LOOP, i, 3);
         //}
 
-
-
         //for solid furSphere
         for(let i = 0; i < layers; i++) {
             let current = i / (layers-1);
-            console.log(current);
             gl.uniform1f(currentLayerLocation, current);
             gl.drawArrays(gl.TRIANGLES, 0, furSphere.vertices.length);
         }

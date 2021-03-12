@@ -14,14 +14,26 @@ uniform mat4 uProjectionMatrix;
 uniform vec4 uLightPosition;
 uniform mat3 uNormalMatrix;
 uniform float uCurrentLayer;
+uniform float uHairLength;
+uniform float uHairDroop;
+uniform float uTime;
 
 void main()
 {
 
-    vec4 vPosition = aPosition + aNormal * uCurrentLayer * 0.5;
+    vec4 vPosition = aPosition + aNormal * uCurrentLayer * uHairLength;
 
-    //give fur hairs a slight curve projectory
-    vPosition += uCurrentLayer * uCurrentLayer * vec4(0.0,-0.1,0.0, 0.0);
+    //Position.xyz * Frequency + Speed.xyz * Time
+    vec3 sampleCoords = aPosition.xyz * 25.0 + vec3(0.3, 0.2, 0.2) * (uTime * 2.0);
+    vec4 forceDirection = vec4(sin(sampleCoords).xyz * 0.03, 0.0);
+
+    //give fur hairs a droop factor
+    float displacement = uCurrentLayer * uHairLength * uHairDroop;
+
+    //add gravity factor with displacement - x^2 * gravity
+    vPosition += pow(displacement,2.0) * vec4(0.0,-0.1,0.0, 0.0);
+    //add force direction factor with current layer - x^2 * force direction
+    vPosition += pow(uCurrentLayer,2.0) * forceDirection;
 
     vec3 pos = (uModelViewMatrix * aPosition).xyz;
 
@@ -34,8 +46,6 @@ void main()
 
     E =  -normalize(pos);
     N = normalize( uNormalMatrix*aNormal.xyz);
-
-    //gl_Position = uProjectionMatrix * uModelViewMatrix * aPosition;
 
     gl_Position = uProjectionMatrix * uModelViewMatrix * vPosition;
 

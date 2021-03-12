@@ -17,16 +17,20 @@ out vec4 fColor;
 
 void main()
 {
+    //mix(x,y,a) - x: start, y: end, a: value to interpolate between x and y
+    float shadow = mix(0.0,1.0,vCurrentLayer);
+
     vec3 H = normalize( L + E );
-    vec4 ambient = uAmbientProduct;
+    //float ambientBlend = 1.0-pow(1.0-vCurrentLayer,5.0);
+    vec4 ambient = uAmbientProduct;// * mix(0.4, 1.0, ambientBlend);
 
     float Kd = max( dot(L, N), 0.0 );
-    vec4  diffuse = Kd * uDiffuseProduct;
+    vec4  diffuse = Kd * uDiffuseProduct * shadow;
 
-    vec4 baseColor = texture(uFurTexture,vTexCoord);
+    vec4 furColor = texture(uFurTexture,vTexCoord);
 
     //vec4 diffuseCombine = (diffuse + ambient) * texture(uFurTexture,vTexCoord);
-    vec4 diffuseCombine = (diffuse + ambient) * baseColor;
+    vec4 diffuseCombine = (diffuse + ambient) * furColor;
 
     float Ks = pow( max(dot(N, H), 0.0), uShininess );
     vec4  specular = Ks * uSpecularProduct;
@@ -35,12 +39,7 @@ void main()
         specular = vec4(0.0, 0.0, 0.0, 1.0);
 
     vec4 vColor = diffuseCombine + specular;
-    //vec4 vColor = vec4(0.5, 0.0, 0.0, 1);
-    //vColor.a = (vCurrentLayer == 0.0) ? 1.0 : texture(uBaseTexture,vTexCoord).r - vCurrentLayer;
     vColor.a = (vCurrentLayer == 0.0) ? 1.0 : max((texture(uBaseTexture,vTexCoord).r - vCurrentLayer), 0.0);
-    //vColor.a = texture(uBaseTexture,vTexCoord).r;
-
 
     fColor = vColor;
-    //fColor = vec4(vTexCoord.x,vTexCoord.y,0,1);
 }
