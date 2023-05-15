@@ -1,0 +1,181 @@
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -9999;
+    background-color: #7be1ff !important;
+}
+
+main {
+    padding-top: 100px;
+}
+
+
+.navbar {
+    min-height: 80px;
+}
+
+.navbar-brand {
+    background-image: linear-gradient(
+            45deg,
+            #A7489B 0%,
+            #CA4246 16.666%,
+            #E16541 16.666%,
+            #E16541 33.333%,
+            #F18F43 33.333%,
+            #F18F43 50%,
+            #8B9862 50%,
+            #8B9862 66.666%,
+            #007ae8 66.666%,
+            #476098 83.333%,
+            #A7489B 83.333%);
+
+    background-repeat: repeat;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    font-weight: bold;
+
+    animation: rainbow-text-simple-animation-rev 0.75s ease forwards;
+}
+
+.navbar-brand:hover{
+    animation: rainbow-text-simple-animation 0.5s ease-in forwards;
+}
+
+@keyframes rainbow-text-simple-animation-rev {
+    0% {
+        background-size: 650%;
+    }
+    40% {
+        background-size: 650%;
+    }
+    100% {
+        background-size: 100%;
+    }
+}
+
+@keyframes rainbow-text-simple-animation {
+    0% {
+        background-size: 100%;
+    }
+    80% {
+        background-size: 650%;
+    }
+    100% {
+        background-size: 650%;
+    }
+}
+
+.nav-link {
+    background-image: linear-gradient(
+            45deg,
+            #A7489B 0%,
+            #CA4246 16.666%,
+            #E16541 16.666%,
+            #E16541 33.333%,
+            #F18F43 33.333%,
+            #F18F43 50%,
+            #8B9862 50%,
+            #8B9862 66.666%,
+            #007ae8 66.666%,
+            #476098 83.333%,
+            #A7489B 83.333%);
+
+    background-repeat: repeat;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    font-weight: bold;
+
+    animation: rainbow-text-simple-animation-rev 0.75s ease forwards;
+}
+
+
+.nav-link:hover {
+    animation: rainbow-text-simple-animation 0.5s ease-in forwards;
+}
+
+.active {
+    background-image: linear-gradient(
+            45deg,
+            #A7489B 0%,
+            #CA4246 16.666%,
+            #E16541 16.666%,
+            #E16541 33.333%,
+            #F18F43 33.333%,
+            #F18F43 50%,
+            #8B9862 50%,
+            #8B9862 66.666%,
+            #007ae8 66.666%,
+            #476098 83.333%,
+            #A7489B 83.333%);
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+
+}
+
+
+.nav-item {
+
+}
+
+.a-custom {
+    color: black;
+    font-size: 120%;
+}
+
+.a-custom:hover {
+    color: crimson;
+}
+
+th {
+    text-align: left;
+}
+
+.navbar-custom {
+    background-color: #1c1c1c !important;
+}
+
+.border-custom {
+    border: 2px solid #1c1c1c !important;
+}
+
+.base-tag{ color:#000000;display:inline-block;padding-left:8px;padding-right:8px;padding-top:8px;padding-bottom:8px;text-align:center;margin-top:8px;border-radius:4px; }
+
+.javascript-tag { background-color:#97bbe6!important; }
+.otherlibrary-tag { background-color:#e4e007!important }
+.webgl2-tag { background-color:#f19be2!important; }
+.glsl-tag { background-color:#e9393f!important; }
+.html5-tag { background-color:#ad79f0!important; }
+.cpp-tag { background-color:#f99245!important; }
+.unreal-tag { background-color:#3cb371!important; }
+.csharp-tag { background-color:#9acd32!important; }
+.unity-tag { background-color:#d06262!important; }
+.kotlin-tag { background-color:#ff6347!important; }
+.android-tag { background-color:#5d8fe4!important; }
+
+.custom-li {
+    padding: 1px 0 1px 40px;
+    background-image: url("images/star.svg");
+    background-repeat: no-repeat;
+}
+
+.custom-ul {
+    margin-left: 40px;
+    list-style:none;
+}
+
+
+
